@@ -14,27 +14,7 @@ import java.util.function.Function;
 public class JwtUtil {
     private String secret = "oRXz4rXtZPqeM0ZfB/SGnGp4rQ5VvHtfsABwLJ1MmFw/3/XYloHjJQO3QyU1wUcZZscSgI4ZoDgUQ2A7v19UMQ==\n";
 
-    public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
-    }
-
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
-    private Claims extractAllClaims(String token) {
-        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
-    }
-
-    private Boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
-    }
-
+   
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
         return createToken(claims, username);
